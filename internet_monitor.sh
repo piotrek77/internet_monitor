@@ -18,19 +18,20 @@ echo "Rozpoczynam monitorowanie internetu: $(date)"
 
 while true; do
     TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+
+    # Pierwsza próba pingowania
     if ping -c 1 "$PING_ADDRESS" > /dev/null 2>&1; then
         echo "$TIMESTAMP,Connected" >> "$LOGFILE"
     else
-       ## echo "$TIMESTAMP,Disconnected" >> "$LOGFILE"
-
-		if ping -c 1 "$PING_ADDRESS" > /dev/null 2>&1; then
-		        echo "$TIMESTAMP,Connected" >> "$LOGFILE"
-		else
-		        echo "$TIMESTAMP,Disconnected" >> "$LOGFILE"
-		fi
-
-
-
+        # Druga próba pingowania
+        sleep 1
+        if ping -c 1 "$PING_ADDRESS" > /dev/null 2>&1; then
+            echo "$TIMESTAMP,Connected (Retry)" >> "$LOGFILE"
+        else
+            echo "$TIMESTAMP,Disconnected" >> "$LOGFILE"
+        fi
     fi
+
+    # Oczekiwanie przed kolejną iteracją
     sleep "$INTERVAL"
 done

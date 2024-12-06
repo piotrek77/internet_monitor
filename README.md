@@ -1,3 +1,4 @@
 # internet_monitor
 
-simple script - monitoring internet connection (pind)
+simple script - monitoring internet connection (ping)
+

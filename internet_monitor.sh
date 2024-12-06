@@ -7,7 +7,7 @@ LOGFILE="$HOME/internet_monitor.csv"
 PING_ADDRESS="8.8.8.8"
 
 # Czas w sekundach między kolejnymi sprawdzeniami
-INTERVAL=60
+INTERVAL=15
 
 # Jeśli log nie istnieje, utwórz go z nagłówkiem
 if [ ! -f "$LOGFILE" ]; then
@@ -21,7 +21,16 @@ while true; do
     if ping -c 1 "$PING_ADDRESS" > /dev/null 2>&1; then
         echo "$TIMESTAMP,Connected" >> "$LOGFILE"
     else
-        echo "$TIMESTAMP,Disconnected" >> "$LOGFILE"
+       ## echo "$TIMESTAMP,Disconnected" >> "$LOGFILE"
+
+		if ping -c 1 "$PING_ADDRESS" > /dev/null 2>&1; then
+		        echo "$TIMESTAMP,Connected" >> "$LOGFILE"
+		else
+		        echo "$TIMESTAMP,Disconnected" >> "$LOGFILE"
+		fi
+
+
+
     fi
     sleep "$INTERVAL"
 done
